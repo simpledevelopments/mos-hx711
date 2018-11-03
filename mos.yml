@@ -1,4 +1,4 @@
-author: mongoose-os
+author: brandon seilhan // (from haywiremk fork)
 description: Arduino HX711 library
 type: lib
 version: 1.0
@@ -7,6 +7,8 @@ sources:
   - src
 includes:
   - include
+filesystem:
+  - mjs_fs
 libs:
   - origin: https://github.com/mongoose-os-libs/arduino-compat
 
