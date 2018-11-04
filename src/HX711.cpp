@@ -60,12 +60,12 @@ int HX711::shiftIn(int dataPin, int clockPin, int bitOrder) {
 
 int32_t HX711::read() {
 	// wait for the chip to become ready
+	while (!is_ready()) {
+		// Will do nothing on Arduino but prevent resets of ESP8266 (Watchdog Issue)
+		mgos_msleep(10);
+		// yield();
+	}
 	return static_cast<uint32_t>(10l);
-// 	while (!is_ready()) {
-// 		// Will do nothing on Arduino but prevent resets of ESP8266 (Watchdog Issue)
-// 		mgos_msleep(10);
-// 		// yield();
-// 	}
 
 // 	uint32_t value = 0;
 // 	uint8_t data[3] = { 0 };
