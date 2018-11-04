@@ -60,7 +60,7 @@ int HX711::shiftIn(int dataPin, int clockPin, int bitOrder) {
 
 int32_t HX711::read() {
 	// wait for the chip to become ready
-	while (mgos_gpio_read(DOUT) == true) {
+	while (!is_ready()) {
 		// Will do nothing on Arduino but prevent resets of ESP8266 (Watchdog Issue)
 		mgos_msleep(1);
 		// yield();
