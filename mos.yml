@@ -10,7 +10,6 @@ includes:
 filesystem:
   - mjs_fs
 libs:
-  - origin: https://github.com/mongoose-os-libs/arduino-compat
 
 tags:
   - arduino

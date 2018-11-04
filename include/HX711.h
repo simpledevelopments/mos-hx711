@@ -1,7 +1,7 @@
 #ifndef HX711_h
 #define HX711_h
 
-#include "Arduino.h"
+#include <stdint.h>
 
 class HX711
 {

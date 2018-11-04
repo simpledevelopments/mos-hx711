@@ -1,14 +1,9 @@
-#include "Arduino.h"
+#include <stdint.h>
+
 #include "HX711.h"
+#include "mgos_gpio.h"
 #include "mgos_system.h"
 
-/*
-#if ARDUINO_VERSION <= 106
-    // "yield" is not implemented as noop in older Arduino Core releases, so let's define it.
-    // See also: https://stackoverflow.com/questions/34497758/what-is-the-secret-of-the-arduino-yieldfunction/34498165#34498165
-    void yield(void) {};
-#endif
-*/
 HX711::HX711(uint8_t dout, uint8_t pd_sck, uint8_t gain) {
 	begin(dout, pd_sck, gain);
 }
@@ -18,14 +13,13 @@ void HX711::begin(uint8_t dout, uint8_t pd_sck, uint8_t gain) {
 	PD_SCK = pd_sck;
 	DOUT = dout;
 
-	pinMode(PD_SCK, OUTPUT);
-	pinMode(DOUT, INPUT);
-
+	mgos_gpio_set_mode(PD_SCK, MGOS_GPIO_MODE_INPUT);
+	mgos_gpio_set_mode(DOUT, MGOS_GPIO_MODE_OUTPUT);
 	set_gain(gain);
 }
 
 bool HX711::is_ready() {
-	return digitalRead(DOUT) == LOW;
+	return mgos_gpio_read(DOUT) == false;
 }
 
 void HX711::set_gain(uint8_t gain) {
@@ -41,7 +35,7 @@ void HX711::set_gain(uint8_t gain) {
 			break;
 	}
 
-	digitalWrite(PD_SCK, LOW);
+	mgos_gpio_write(PD_SCK, false);
 	read();
 }
 
@@ -51,14 +45,14 @@ int HX711::shiftIn(int dataPin, int clockPin, int bitOrder) {
  uint8_t i;
 
  for (i = 0; i < 8; ++i) {
-	digitalWrite(clockPin, HIGH);
+	mgos_gpio_write(clockPin, true);
 	mgos_usleep(1); //needed to meet chip spec
 	 if (bitOrder == 0)
-		value |= digitalRead(dataPin) << i;
+		value |= mgos_gpio_read(dataPin) << i;
 	 else
-		value |= digitalRead(dataPin) << (7 - i);
+		value |= mgos_gpio_read(dataPin) << (7 - i);
 
-	 digitalWrite(clockPin, LOW);
+	 mgos_gpio_write(clockPin, false);
 	 mgos_usleep(1);//needed to meet chip spec
  }
  return value;
@@ -83,8 +77,8 @@ int32_t HX711::read() {
 
 	// set the channel and the gain factor for the next reading using the clock pin
 	for (unsigned int i = 0; i < GAIN; i++) {
-		digitalWrite(PD_SCK, HIGH);
-		digitalWrite(PD_SCK, LOW);
+		mgos_gpio_write(PD_SCK, true);
+		mgos_gpio_write(PD_SCK, false);
 	}
 
 	// Replicate the most significant bit to pad out a 32-bit signed integer
@@ -105,7 +99,7 @@ int32_t HX711::read() {
 
 int32_t HX711::read_average(uint8_t times) {
 	int32_t sum = 0;
-	for (byte i = 0; i < times; i++) {
+	for (uint8_t i = 0; i < times; i++) {
 		sum += read();
 		//yield();
 	}
@@ -142,10 +136,10 @@ int32_t HX711::get_offset() {
 }
 
 void HX711::power_down() {
-	digitalWrite(PD_SCK, LOW);
-	digitalWrite(PD_SCK, HIGH);
+	mgos_gpio_write(PD_SCK, false);
+	mgos_gpio_write(PD_SCK, true);
 }
 
 void HX711::power_up() {
-	digitalWrite(PD_SCK, LOW);
+	mgos_gpio_write(PD_SCK, false);
 }
