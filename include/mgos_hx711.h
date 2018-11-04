@@ -1,5 +1,5 @@
 /*
-  * Arduino HX711 library API wrapper
+  * HX711 library API wrapper
  */
 
 #ifndef CS_MOS_LIBS_ARDUINO_HX711_SRC_MGOS_ARDUINO_HX711_H_

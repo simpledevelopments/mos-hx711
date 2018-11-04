@@ -1,5 +1,5 @@
 #include <math.h>
-#include "mgos_arduino_hx711.h"
+#include "mgos_hx711.h"
 
 HX711 *mgos_hx711_create(int dout, int pd_sck, int gain) {
 	return new HX711(dout, pd_sck, gain);
