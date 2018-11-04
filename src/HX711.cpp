@@ -62,7 +62,8 @@ int32_t HX711::read() {
 	// wait for the chip to become ready
 	while (!is_ready()) {
 		// Will do nothing on Arduino but prevent resets of ESP8266 (Watchdog Issue)
-		//yield();
+		mgos_msleep(1);
+		// yield();
 	}
 
 	uint32_t value = 0;
