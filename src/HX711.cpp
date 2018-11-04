@@ -13,8 +13,8 @@ void HX711::begin(uint8_t dout, uint8_t pd_sck, uint8_t gain) {
 	PD_SCK = pd_sck;
 	DOUT = dout;
 
-	mgos_gpio_set_mode(PD_SCK, MGOS_GPIO_MODE_INPUT);
-	mgos_gpio_set_mode(DOUT, MGOS_GPIO_MODE_OUTPUT);
+	mgos_gpio_set_mode(PD_SCK, MGOS_GPIO_MODE_OUTPUT);
+	mgos_gpio_set_mode(DOUT, MGOS_GPIO_MODE_INPUT);
 	set_gain(gain);
 }
 
@@ -60,7 +60,7 @@ int HX711::shiftIn(int dataPin, int clockPin, int bitOrder) {
 
 int32_t HX711::read() {
 	// wait for the chip to become ready
-	while (!is_ready()) {
+	while (mgos_gpio_read(DOUT) == true) {
 		// Will do nothing on Arduino but prevent resets of ESP8266 (Watchdog Issue)
 		mgos_msleep(1);
 		// yield();
