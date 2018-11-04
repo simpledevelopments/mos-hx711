@@ -1,4 +1,6 @@
-# Arduino HX711 library for Mongoose OS
+# HX711 library for Mongoose OS
+
+This is my attempt at adapting the arduino-hx711 library into a native mongoose os one.
 
 ## Example code for JS
 ```
