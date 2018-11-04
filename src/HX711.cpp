@@ -60,42 +60,43 @@ int HX711::shiftIn(int dataPin, int clockPin, int bitOrder) {
 
 int32_t HX711::read() {
 	// wait for the chip to become ready
-	while (!is_ready()) {
-		// Will do nothing on Arduino but prevent resets of ESP8266 (Watchdog Issue)
-		mgos_msleep(1);
-		// yield();
-	}
+	return static_cast<uint32_t>(10l);
+// 	while (!is_ready()) {
+// 		// Will do nothing on Arduino but prevent resets of ESP8266 (Watchdog Issue)
+// 		mgos_msleep(10);
+// 		// yield();
+// 	}
 
-	uint32_t value = 0;
-	uint8_t data[3] = { 0 };
-	uint8_t filler = 0x00;
-//rtc_clk_cpu_freq_set(RTC_CPU_FREQ_80M);
-	// pulse the clock pin 24 times to read the data
-	data[2] = shiftIn(DOUT, PD_SCK, 1);
-	data[1] = shiftIn(DOUT, PD_SCK, 1);
-	data[0] = shiftIn(DOUT, PD_SCK, 1);
-//	rtc_clk_cpu_freq_set(RTC_CPU_FREQ_240M);
+// 	uint32_t value = 0;
+// 	uint8_t data[3] = { 0 };
+// 	uint8_t filler = 0x00;
+// //rtc_clk_cpu_freq_set(RTC_CPU_FREQ_80M);
+// 	// pulse the clock pin 24 times to read the data
+// 	data[2] = shiftIn(DOUT, PD_SCK, 1);
+// 	data[1] = shiftIn(DOUT, PD_SCK, 1);
+// 	data[0] = shiftIn(DOUT, PD_SCK, 1);
+// //	rtc_clk_cpu_freq_set(RTC_CPU_FREQ_240M);
 
-	// set the channel and the gain factor for the next reading using the clock pin
-	for (unsigned int i = 0; i < GAIN; i++) {
-		mgos_gpio_write(PD_SCK, true);
-		mgos_gpio_write(PD_SCK, false);
-	}
+// 	// set the channel and the gain factor for the next reading using the clock pin
+// 	for (unsigned int i = 0; i < GAIN; i++) {
+// 		mgos_gpio_write(PD_SCK, true);
+// 		mgos_gpio_write(PD_SCK, false);
+// 	}
 
-	// Replicate the most significant bit to pad out a 32-bit signed integer
-	if (data[2] & 0x80) {
-		filler = 0xFF;
-	} else {
-		filler = 0x00;
-	}
+// 	// Replicate the most significant bit to pad out a 32-bit signed integer
+// 	if (data[2] & 0x80) {
+// 		filler = 0xFF;
+// 	} else {
+// 		filler = 0x00;
+// 	}
 
-	// Construct a 32-bit signed integer
-	value = ( static_cast<unsigned int32_t>(filler) << 24
-			| static_cast<unsigned int32_t>(data[2]) << 16
-			| static_cast<unsigned int32_t>(data[1]) << 8
-			| static_cast<unsigned int32_t>(data[0]) );
+// 	// Construct a 32-bit signed integer
+// 	value = ( static_cast<unsigned int32_t>(filler) << 24
+// 			| static_cast<unsigned int32_t>(data[2]) << 16
+// 			| static_cast<unsigned int32_t>(data[1]) << 8
+// 			| static_cast<unsigned int32_t>(data[0]) );
 
-	return static_cast<int32_t>(value);
+// 	return static_cast<int32_t>(value);
 }
 
 int32_t HX711::read_average(uint8_t times) {
