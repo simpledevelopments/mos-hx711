@@ -33,6 +33,7 @@ int mgos_hx711_get_units(HX711 *hx, int times);
 void mgos_hx711_tare(HX711 *hx, int times);
 void mgos_hx711_set_scale(HX711 *hx, int scale);
 int mgos_hx711_get_scale(HX711 *hx);
+void mgos_hx711_set_gain(HX711 *hx, int gain);
 	
 #ifdef __cplusplus
 }
