@@ -60,3 +60,8 @@ int mgos_hx711_get_scale(HX711 *hx) {
 	if (hx == nullptr) return 0;
 	return round(hx->get_scale() * 100.0);
 }
+
+void mgos_hx711_set_gain(HX711 *hx,int gain) {
+	if (hx == nullptr) return;
+	hx->set_gain(gain);
+}

@@ -12,6 +12,7 @@ let HX711 = {
   _c_tare: ffi('void mgos_hx711_tare(void *, int)'),
   _c_ss: ffi('void mgos_hx711_set_scale(void *, int)'),
   _c_gs: ffi('int mgos_hx711_get_scale(void *)'),
+  _c_sg: ffi('int mgos_hx711_set_gain(void *, int)'),
 
 
   // Return value: an object with the methods described below.
@@ -56,7 +57,9 @@ let HX711 = {
 	get_scale: function() {
       return HX711._c_gs(this.hx)  / 100.0;
     },
-		
+  set_gain: function(gain) {
+      HX711._c_sg(this.hx, gain);
+    },		
   },
   
 };
