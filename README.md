@@ -1,6 +1,6 @@
 # HX711 library for Mongoose OS
 
-This is my attempt at adapting the arduino-hx711 library into a native mongoose os one.
+Building on the work of those who have gone before. Attempting to adjust delays in order to improve stability of readings.
 
 ## Example code for JS
 ```
@@ -11,7 +11,7 @@ load('api_mqtt.js');
 load('api_net.js');
 load('api_sys.js');
 load('api_timer.js');
-load('api_arduino_hx711.js');
+load('api_hx711.js');
 let dataPin = 12;
 let clkPin=14;
 
