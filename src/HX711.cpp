@@ -70,8 +70,7 @@ int32_t HX711::read() {
 	uint8_t data[3] = { 0 };
 	uint8_t filler = 0x00;
 	
-	portMUX_TYPE mux = portMUX_INITIALIZER_UNLOCKED;
-	portENTER_CRITICAL(&mux);
+	mgos_ints_disable();
 	
 //rtc_clk_cpu_freq_set(RTC_CPU_FREQ_80M);
 	// pulse the clock pin 24 times to read the data
@@ -86,7 +85,7 @@ int32_t HX711::read() {
 		mgos_gpio_write(PD_SCK, false);
 	}
 	
-	portEXIT_CRITICAL(&mux);
+	mgos_ints_enable();
 
 	// Replicate the most significant bit to pad out a 32-bit signed integer
 	if (data[2] & 0x80) {
